@@ -1,87 +1,153 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { LogoutButton } from './LogoutButton'
+import { Button } from '@/components/ui/Button'
 import type { User } from '@supabase/supabase-js'
 
-export function AuthStatus() {
+interface AuthStatusProps {
+  className?: string
+}
+
+interface UserProfile {
+  id: string
+  email: string
+  full_name?: string
+  role: 'visitor' | 'collector' | 'admin'
+}
+
+export function AuthStatus({ className }: AuthStatusProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+  const router = useRouter()
   const supabase = createClient()
 
   useEffect(() => {
-    // If Supabase is not configured, just show the sign in link
-    if (!supabase) {
-      setLoading(false)
-      return
+    const getUserAndProfile = async () => {
+      if (!supabase) {
+        setLoading(false)
+        return
+      }
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser()
+        setUser(user)
+        
+        if (user) {
+          // Fetch user profile
+          const { data: userProfile } = await supabase
+            .from('user_profiles')
+            .select('*')
+            .eq('id', user.id)
+            .single()
+          
+          setProfile(userProfile)
+        } else {
+          setProfile(null)
+        }
+      } catch (error) {
+        console.error('Error getting user:', error)
+      } finally {
+        setLoading(false)
+      }
     }
 
-    const getUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser()
-      setUser(user)
-      setLoading(false)
+    getUserAndProfile()
+
+    // Listen for auth changes
+    if (supabase) {
+      const { data: { subscription } } = supabase.auth.onAuthStateChange(
+        (event, session) => {
+          setUser(session?.user ?? null)
+          if (event === 'SIGNED_OUT') {
+            setProfile(null)
+            router.refresh()
+          } else if (session?.user) {
+            // Fetch profile for new user
+            supabase
+              .from('user_profiles')
+              .select('*')
+              .eq('id', session.user.id)
+              .single()
+              .then(({ data }) => setProfile(data))
+          }
+        }
+      )
+
+      return () => subscription.unsubscribe()
     }
+  }, [supabase, router])
 
-    getUser()
+  const handleSignOut = async () => {
+    if (!supabase) return
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user ?? null)
-    })
-
-    return () => subscription.unsubscribe()
-  }, [supabase])
+    setIsLoggingOut(true)
+    try {
+      await supabase.auth.signOut()
+      router.push('/')
+      router.refresh()
+    } catch (error) {
+      console.error('Error signing out:', error)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
 
   if (loading) {
     return (
-      <div className="flex items-center space-x-4">
-        <div className="h-8 w-8 bg-gray-200 rounded-full animate-pulse" />
-        <div className="h-4 w-24 bg-gray-200 rounded animate-pulse" />
+      <div className={className}>
+        <div className="animate-pulse">
+          <div className="h-8 w-20 bg-gray-200 rounded"></div>
+        </div>
       </div>
     )
+  }
+
+  if (!supabase) {
+    return null // Don't show auth status if Supabase is not configured
   }
 
   if (!user) {
     return (
-      <Link
-        href="/login"
-        className="text-sm font-medium text-gray-700 hover:text-turquoise-600 transition-colors"
-      >
-        Sign in
-      </Link>
+      <div className={className}>
+        <Link href="/login">
+          <Button variant="secondary" size="sm">
+            Sign In
+          </Button>
+        </Link>
+      </div>
     )
   }
 
-  // Check if user is admin based on email or metadata
-  const isAdmin = user.email === 'evgenia@evgeniaportnov.com' || user.user_metadata?.role === 'admin'
+  // Get display name - prefer full name, fallback to email
+  const displayName = profile?.full_name || user.email
+  const isAdmin = profile?.role === 'admin'
 
   return (
-    <div className="flex items-center space-x-4">
-      <div className="flex items-center space-x-2">
-        <div className="h-8 w-8 bg-turquoise-500 rounded-full flex items-center justify-center">
-          <span className="text-white text-sm font-medium">
-            {user.email?.[0]?.toUpperCase() || 'U'}
-          </span>
-        </div>
-        <div className="hidden sm:block">
-          <p className="text-sm font-medium text-gray-700">{user.email}</p>
-          {isAdmin && (
-            <p className="text-xs text-turquoise-600">Admin</p>
-          )}
-        </div>
-      </div>
-
-      <div className="flex items-center space-x-2">
+    <div className={className}>
+      <div className="flex items-center gap-3">
+        <span className="text-sm text-gray-600">
+          Welcome, {displayName}
+        </span>
         {isAdmin && (
-          <Link
-            href="/admin/dashboard"
-            className="text-sm font-medium text-gray-700 hover:text-turquoise-600 transition-colors"
-          >
-            Dashboard
+          <Link href="/admin/dashboard">
+            <Button variant="secondary" size="sm">
+              Dashboard
+            </Button>
           </Link>
         )}
-        <LogoutButton size="sm" />
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleSignOut}
+          disabled={isLoggingOut}
+        >
+          {isLoggingOut ? 'Signing out...' : 'Sign Out'}
+        </Button>
       </div>
     </div>
   )

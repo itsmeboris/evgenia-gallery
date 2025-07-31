@@ -126,7 +126,7 @@ export default function LoginPage() {
 
             <div className="text-sm">
               <Link
-                href="/auth/forgot-password"
+                href="/forgot-password"
                 className={cn(
                   "font-medium transition-colors",
                   supabase
@@ -153,10 +153,18 @@ export default function LoginPage() {
           </div>
         </form>
 
-        <div className="text-center">
-          <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
-            ← Back to Gallery
-          </Link>
+        <div className="text-center space-y-2">
+          <div>
+            <span className="text-sm text-gray-600">Don&apos;t have an account? </span>
+            <Link href="/register" className="text-sm text-turquoise-600 hover:text-turquoise-500 font-medium">
+              Create account
+            </Link>
+          </div>
+          <div>
+            <Link href="/" className="text-sm text-gray-600 hover:text-gray-900">
+              ← Back to Gallery
+            </Link>
+          </div>
         </div>
       </div>
     </div>
