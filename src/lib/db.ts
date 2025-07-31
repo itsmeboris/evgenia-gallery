@@ -1,4 +1,11 @@
 import { PrismaClient, Category } from '@prisma/client'
+import {
+  realArtworks,
+  getRealArtworkById,
+  getRealAvailableArtworks,
+  getRealArtworksByCategory,
+  realDataStats
+} from './real-data'
 
 // Singleton pattern for Prisma Client to prevent too many connections in development
 const globalForPrisma = global as unknown as { prisma: PrismaClient }
@@ -150,8 +157,9 @@ const mockArtworks = [
 // Example query helpers
 export async function getArtworkWithRelations(id: string) {
   if (!prisma) {
-    // Return mock data for development
-    return mockArtworks.find(a => a.id === id) || null
+    // Return real artwork data for development
+    console.log('📦 Using real artwork data - Database not connected')
+    return getRealArtworkById(id)
   }
 
   return prisma.artwork.findUnique({
@@ -173,9 +181,10 @@ export async function getArtworkWithRelations(id: string) {
 
 export async function getAvailableArtworks() {
   if (!prisma) {
-    // Return mock data for development
-    console.log('📦 Using mock data - Database not connected')
-    return mockArtworks.filter(a => a.availabilityStatus === 'available')
+    // Return real artwork data for development
+    console.log('🎨 Using real artwork data - Database not connected')
+    console.log('📊 Real data stats:', realDataStats)
+    return getRealAvailableArtworks()
   }
 
   return prisma.artwork.findMany({
@@ -190,11 +199,9 @@ export async function getAvailableArtworks() {
 
 export async function getArtworksByCategory(category: string) {
   if (!prisma) {
-    // Return mock data for development
-    return mockArtworks.filter(a =>
-      a.category.toLowerCase() === category.toLowerCase() &&
-      a.availabilityStatus === 'available'
-    )
+    // Return real artwork data for development
+    console.log(`🎨 Getting real artworks for category: ${category}`)
+    return getRealArtworksByCategory(category)
   }
 
   return prisma.artwork.findMany({
