@@ -37,12 +37,12 @@ const defaultColor = { bg: 'bg-turquoise-50', text: 'text-turquoise-700', border
 export function EmotionalTags({ tags, size = 'md', className, onClick }: EmotionalTagsProps) {
   const sizeClasses = {
     sm: 'px-2 py-0.5 text-xs',
-    md: 'px-3 py-1 text-sm',
-    lg: 'px-4 py-2 text-base',
+    md: 'px-2.5 py-0.5 text-xs',
+    lg: 'px-3 py-1 text-sm',
   }
 
   return (
-    <div className={cn('flex flex-wrap gap-2', className)}>
+    <div className={cn('flex flex-wrap gap-1.5', className)}>
       {tags.map((tag) => {
         const colors = tagColors[tag.toLowerCase()] || defaultColor
         const isClickable = !!onClick

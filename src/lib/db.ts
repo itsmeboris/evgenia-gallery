@@ -1,6 +1,5 @@
 import { PrismaClient, Category } from '@prisma/client'
 import {
-  realArtworks,
   getRealArtworkById,
   getRealAvailableArtworks,
   getRealArtworksByCategory,
@@ -33,132 +32,10 @@ export type ArtworkWithRelations = Awaited<
   ReturnType<typeof getArtworkWithRelations>
 >
 
-// Mock data for development when database is not available
-const mockArtworks = [
-  {
-    id: '1',
-    title: 'Morning Birds',
-    slug: 'morning-birds',
-    category: 'birds' as const,
-    subcategory: 'songbirds',
-    medium: 'Acrylic on Canvas',
-    dimensions: { width: 40, height: 40, unit: 'cm' },
-    weight: null,
-    creationYear: 2023,
-    creationMonth: 3,
-    storyBehindBrushstroke: 'This piece emerged during a peaceful morning, capturing the essence of freedom and joy that birds bring to our lives.',
-    emotionalTags: ['freedom', 'joy', 'peace'],
-    inspirationSource: 'Morning meditation',
-    primaryImage: {
-      url: '/artwork/placeholder.svg',
-      altText: 'Morning Birds - Acrylic painting of colorful birds',
-      colorProfile: 'sRGB'
-    },
-    detailImages: [],
-    roomViewImage: null,
-    videoUrl: null,
-    availabilityStatus: 'available' as const,
-    isOriginal: true,
-    editionInfo: null,
-    pricing: { original: 850 },
-    featured: true,
-    galleryOrder: 1,
-    seoDescription: 'Beautiful acrylic painting of morning birds bringing joy and freedom',
-    searchTags: ['birds', 'morning', 'freedom', 'joy'],
-    searchVector: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    artist: null,
-    inquiries: [],
-    orderItems: [],
-    collectorWishlists: [],
-    exhibitions: []
-  },
-  {
-    id: '2',
-    title: 'Healing Garden',
-    slug: 'healing-garden',
-    category: 'flowers' as const,
-    subcategory: 'garden',
-    medium: 'Acrylic on Canvas',
-    dimensions: { width: 50, height: 60, unit: 'cm' },
-    weight: null,
-    creationYear: 2023,
-    creationMonth: 5,
-    storyBehindBrushstroke: 'A meditation on growth and renewal, this garden represents the healing power of nature.',
-    emotionalTags: ['growth', 'healing', 'renewal', 'peace'],
-    inspirationSource: 'Spring garden',
-    primaryImage: {
-      url: '/artwork/placeholder.svg',
-      altText: 'Healing Garden - Vibrant flower painting',
-      colorProfile: 'sRGB'
-    },
-    detailImages: [],
-    roomViewImage: null,
-    videoUrl: null,
-    availabilityStatus: 'available' as const,
-    isOriginal: true,
-    editionInfo: null,
-    pricing: { original: 1200 },
-    featured: true,
-    galleryOrder: 2,
-    seoDescription: 'Vibrant acrylic painting of a healing garden with flowers',
-    searchTags: ['flowers', 'garden', 'healing', 'nature'],
-    searchVector: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    artist: null,
-    inquiries: [],
-    orderItems: [],
-    collectorWishlists: [],
-    exhibitions: []
-  },
-  {
-    id: '3',
-    title: 'Coastal Dreams',
-    slug: 'coastal-dreams',
-    category: 'towns' as const,
-    subcategory: 'seascape',
-    medium: 'Acrylic on Canvas',
-    dimensions: { width: 60, height: 40, unit: 'cm' },
-    weight: null,
-    creationYear: 2023,
-    creationMonth: 7,
-    storyBehindBrushstroke: 'Inspired by the tranquil beauty of coastal towns, this piece invites viewers to find peace in simplicity.',
-    emotionalTags: ['tranquility', 'dreams', 'peace', 'reflection'],
-    inspirationSource: 'Mediterranean coast',
-    primaryImage: {
-      url: '/artwork/placeholder.svg',
-      altText: 'Coastal Dreams - Serene coastal town painting',
-      colorProfile: 'sRGB'
-    },
-    detailImages: [],
-    roomViewImage: null,
-    videoUrl: null,
-    availabilityStatus: 'available' as const,
-    isOriginal: true,
-    editionInfo: null,
-    pricing: { original: 950 },
-    featured: false,
-    galleryOrder: 3,
-    seoDescription: 'Serene acrylic painting of a coastal town',
-    searchTags: ['coast', 'town', 'sea', 'tranquility'],
-    searchVector: null,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-    artist: null,
-    inquiries: [],
-    orderItems: [],
-    collectorWishlists: [],
-    exhibitions: []
-  }
-]
-
 // Example query helpers
 export async function getArtworkWithRelations(id: string) {
   if (!prisma) {
     // Return real artwork data for development
-    console.log('📦 Using real artwork data - Database not connected')
     return getRealArtworkById(id)
   }
 
@@ -182,8 +59,11 @@ export async function getArtworkWithRelations(id: string) {
 export async function getAvailableArtworks() {
   if (!prisma) {
     // Return real artwork data for development
-    console.log('🎨 Using real artwork data - Database not connected')
-    console.log('📊 Real data stats:', realDataStats)
+    // Only log once during development builds
+    if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PHASE) {
+      console.log('🎨 Using real artwork data - Database not connected')
+      console.log('📊 Real data stats:', realDataStats)
+    }
     return getRealAvailableArtworks()
   }
 
@@ -200,7 +80,6 @@ export async function getAvailableArtworks() {
 export async function getArtworksByCategory(category: string) {
   if (!prisma) {
     // Return real artwork data for development
-    console.log(`🎨 Getting real artworks for category: ${category}`)
     return getRealArtworksByCategory(category)
   }
 

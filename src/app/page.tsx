@@ -61,7 +61,7 @@ export default async function HomePage() {
             <div className="w-24 h-1 bg-gradient-to-r from-turquoise-500 to-turquoise-700 mx-auto mb-8" aria-hidden="true"></div>
             <p className="text-base sm:text-lg text-gray-700 max-w-2xl mx-auto mb-8 sm:mb-12 leading-relaxed px-4">
               Discover the transformative power of art. Each painting tells a story of resilience,
-              hope, and the beauty found in life's journey.
+              hope, and the beauty found in life&apos;s journey.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center max-w-md sm:max-w-none mx-auto">
@@ -72,7 +72,7 @@ export default async function HomePage() {
               </Link>
               <Link href="/about">
                 <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                  Artist's Story
+                  Artist&apos;s Story
                 </Button>
               </Link>
             </div>
@@ -152,7 +152,7 @@ export default async function HomePage() {
             </h2>
             <p className="text-lg text-gray-600 mb-8">
               Interested in a piece or commissioning a custom artwork?
-              I'd love to hear from you.
+              I&apos;d love to hear from you.
             </p>
             <Button size="lg" variant="primary">
               Get in Touch

@@ -84,7 +84,7 @@ export function ArtworkGrid({
             className={cn(
               'w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border-2 touch-manipulation',
               selectedCategory === 'all'
-                ? 'bg-turquoise-500 text-white border-turquoise-500 shadow-md'
+                ? 'bg-turquoise-600 text-white border-turquoise-600 shadow-lg font-semibold scale-105'
                 : 'bg-white text-gray-700 border-gray-200 hover:border-turquoise-300 hover:bg-turquoise-50 active:scale-95'
             )}
           >
@@ -100,7 +100,7 @@ export function ArtworkGrid({
               className={cn(
                 'w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border-2 touch-manipulation',
                 selectedCategory === category
-                  ? 'bg-turquoise-500 text-white border-turquoise-500 shadow-md'
+                  ? 'bg-turquoise-600 text-white border-turquoise-600 shadow-lg font-semibold scale-105'
                   : 'bg-white text-gray-700 border-gray-200 hover:border-turquoise-300 hover:bg-turquoise-50 active:scale-95'
               )}
             >
@@ -144,8 +144,8 @@ export function ArtworkGrid({
         </div>
       )}
 
-      {/* Mobile-Optimized Artwork Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+      {/* Mobile-Optimized Artwork Grid with Improved Alignment */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 auto-rows-max">
         <AnimatePresence mode="popLayout">
           {filteredArtworks.slice(0, displayCount).map((artwork, index) => (
             <motion.div

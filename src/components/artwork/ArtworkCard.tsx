@@ -85,14 +85,14 @@ export function ArtworkCard({ artwork, priority = false, onTagClick }: ArtworkCa
           )}
         </div>
 
-                <div className="mt-3 space-y-3">
-          <h3 className="text-lg font-medium text-gray-900 group-hover:text-turquoise-600 transition-colors">
+                <div className="mt-3 space-y-2">
+          <h3 className="text-lg font-medium text-gray-900 group-hover:text-turquoise-600 transition-colors leading-tight">
             {artwork.title}
           </h3>
 
-          {/* Limited Emotional tags for clean layout */}
+          {/* Compact Emotional tags for clean layout */}
           {artwork.emotionalTags && artwork.emotionalTags.length > 0 && (
-            <div onClick={(e) => e.preventDefault()}>
+            <div onClick={(e) => e.preventDefault()} className="min-h-[1.5rem]">
               <EmotionalTags
                 tags={artwork.emotionalTags.slice(0, 2)}
                 size="sm"

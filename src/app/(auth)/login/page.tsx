@@ -39,7 +39,7 @@ export default function LoginPage() {
         router.push('/admin/dashboard')
         router.refresh()
       }
-    } catch (err) {
+            } catch {
       setError('An unexpected error occurred')
     } finally {
       setIsLoading(false)

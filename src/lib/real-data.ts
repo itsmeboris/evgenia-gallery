@@ -123,4 +123,7 @@ export const realDataStats = {
   featured: realArtworks.filter(a => a.featured).length
 }
 
-console.log('🎨 Real artwork data loaded:', realDataStats)
+// Only log during development builds to reduce noise
+if (process.env.NODE_ENV === 'development' && !process.env.NEXT_PHASE) {
+  console.log('🎨 Real artwork data loaded:', realDataStats)
+}

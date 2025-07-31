@@ -146,7 +146,7 @@ export default async function ArtworkDetailPage({
               <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
                 <div className="text-center border-b border-gray-100 pb-6">
                   <h2 className="text-2xl font-display text-gray-900 mb-2">Story Behind the Brushstroke</h2>
-                  <p className="text-sm text-gray-600 italic">A personal journey of healing and transformation</p>
+    
                 </div>
 
                 <div className="prose prose-lg max-w-none">
@@ -162,7 +162,7 @@ export default async function ArtworkDetailPage({
                     </div>
                     <div>
                       <p className="font-medium text-gray-900">Evgenia Portnov</p>
-                      <p className="text-sm text-gray-600">Tech-to-Art Healing Journey</p>
+        
                     </div>
                   </div>
                 </div>

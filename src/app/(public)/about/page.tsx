@@ -27,7 +27,7 @@ export default function AboutPage() {
               {/* Floating quote */}
               <div className="absolute -bottom-6 -right-6 bg-white p-6 rounded-xl shadow-lg max-w-xs">
                 <p className="text-sm text-gray-600 italic">
-                  "Art became my bridge from logic to healing—a language that speaks directly to the soul."
+                  &ldquo;Art became my bridge from logic to healing—a language that speaks directly to the soul.&rdquo;
                 </p>
               </div>
             </div>
@@ -46,7 +46,7 @@ export default function AboutPage() {
               <div className="prose prose-lg text-gray-700">
                 <p>
                   My journey from the analytical world of technology to the intuitive realm of therapeutic art
-                  wasn't planned—it was necessary. After years of building digital solutions, I discovered that
+                  wasn&apos;t planned—it was necessary. After years of building digital solutions, I discovered that
                   my true calling lay in creating visual experiences that heal, transform, and connect us to our
                   deepest emotions.
                 </p>
@@ -113,7 +113,7 @@ export default function AboutPage() {
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Growth</h3>
               <p className="text-gray-600">
-                Flowers embody nature's infinite capacity for renewal and transformation. These works encourage
+                Flowers embody nature&apos;s infinite capacity for renewal and transformation. These works encourage
                 patience with personal growth and the courage to bloom authentically.
               </p>
             </div>
@@ -137,9 +137,9 @@ export default function AboutPage() {
           {/* Personal Statement */}
           <div className="bg-sage-50 rounded-2xl p-8 lg:p-12">
             <blockquote className="text-xl lg:text-2xl text-gray-800 italic text-center leading-relaxed">
-              "In my transition from technology to art, I discovered that healing isn't about forgetting our past—
-              it's about transforming our relationship with it. Each painting is an invitation for viewers to embark
-              on their own journey of emotional discovery and growth."
+              &ldquo;In my transition from technology to art, I discovered that healing isn&apos;t about forgetting our past—
+              it&apos;s about transforming our relationship with it. Each painting is an invitation for viewers to embark
+              on their own journey of emotional discovery and growth.&rdquo;
             </blockquote>
             <div className="text-center mt-6">
               <cite className="text-gray-600 font-medium">— Evgenia Portnov</cite>
@@ -216,7 +216,7 @@ export default function AboutPage() {
                 </svg>
               </div>
               <div>
-                <h3 className="text-lg font-semibold text-gray-900">Today's Mission</h3>
+                <h3 className="text-lg font-semibold text-gray-900">Today&apos;s Mission</h3>
                 <p className="text-gray-600 mt-1">
                   Creating therapeutic art that serves as a bridge between the analytical and intuitive,
                   helping others find their own paths to emotional healing and personal growth.
