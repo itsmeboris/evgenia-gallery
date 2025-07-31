@@ -1,0 +1,327 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ===== ENUMS =====
+
+enum Category {
+  flowers
+  towns
+  birds
+}
+
+enum AvailabilityStatus {
+  available
+  sold
+  reserved
+  nfs       // Not for sale
+  inquire
+}
+
+enum InquiryStatus {
+  new
+  responded
+  closed
+}
+
+enum OrderStatus {
+  pending
+  processing
+  paid
+  shipped
+  delivered
+  cancelled
+  refunded
+}
+
+// ===== MODELS =====
+
+model Artwork {
+  id                     String              @id @default(uuid())
+  title                  String
+  category               Category
+  subcategory            String?
+  medium                 String              // "Acrylic on canvas", "Mixed media on paper"
+  dimensions             Json                // {height, width, unit, depth?}
+  weight                 Float?              // For shipping calculations
+  
+  // Creation & Story
+  creationYear           Int
+  creationMonth          Int?
+  storyBehindBrushstroke String              @db.Text
+  emotionalTags          String[]            // ["hope", "resilience", "peace"]
+  inspirationSource      String?
+  
+  // Imagery
+  primaryImage           Json                // {url, altText, colorProfile}
+  detailImages           Json[]              // Array of image objects
+  roomViewImage          String?             // AR/room preview
+  videoUrl               String?             // Artist talking about the piece
+  
+  // Availability & Editions
+  availabilityStatus     AvailabilityStatus
+  isOriginal             Boolean
+  editionInfo            Json?               // {type, totalEditions, currentEdition}
+  
+  // Pricing & Commerce
+  pricing                Json                // {original?, prints?}
+  
+  // Display & SEO
+  slug                   String              @unique
+  featured               Boolean             @default(false)
+  galleryOrder           Int                 @default(0)
+  seoDescription         String
+  searchTags             String[]
+  
+  // Search
+  searchVector           Unsupported("tsvector")?
+  
+  // Timestamps
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
+  
+  // Relations
+  inquiries              Inquiry[]
+  orderItems             OrderItem[]
+  collectorWishlists     CollectorWishlist[]
+  exhibitions            ExhibitionArtwork[]
+  
+  @@index([category])
+  @@index([availabilityStatus])
+  @@index([featured])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+model Collector {
+  id                String              @id @default(uuid())
+  email             String              @unique
+  name              String
+  phone             String?
+  
+  // Preferences & Profile
+  preferences       Json?               // {favoriteCategories, priceRange, interests}
+  vipStatus         Boolean             @default(false)
+  newsletterOptIn   Boolean             @default(true)
+  
+  // Authentication
+  authId            String?             @unique // Supabase auth ID
+  
+  // Timestamps
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  lastActive        DateTime?
+  
+  // Relations
+  inquiries         Inquiry[]
+  orders            Order[]
+  wishlistItems     CollectorWishlist[]
+  addresses         Address[]
+  
+  @@index([email])
+  @@index([authId])
+}
+
+model CollectorWishlist {
+  id          String    @id @default(uuid())
+  collectorId String
+  artworkId   String
+  notes       String?
+  addedAt     DateTime  @default(now())
+  
+  collector   Collector @relation(fields: [collectorId], references: [id], onDelete: Cascade)
+  artwork     Artwork   @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  
+  @@unique([collectorId, artworkId])
+  @@index([collectorId])
+  @@index([artworkId])
+}
+
+model Inquiry {
+  id          String        @id @default(uuid())
+  collectorId String
+  artworkId   String
+  message     String        @db.Text
+  status      InquiryStatus @default(new)
+  
+  // Response tracking
+  respondedAt DateTime?
+  response    String?       @db.Text
+  
+  // Timestamps
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  
+  // Relations
+  collector   Collector     @relation(fields: [collectorId], references: [id])
+  artwork     Artwork       @relation(fields: [artworkId], references: [id])
+  
+  @@index([collectorId])
+  @@index([artworkId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model Order {
+  id                String      @id @default(uuid())
+  orderNumber       String      @unique
+  collectorId       String
+  
+  // Pricing
+  subtotal          Decimal     @db.Decimal(10, 2)
+  tax               Decimal     @db.Decimal(10, 2)
+  shipping          Decimal     @db.Decimal(10, 2)
+  total             Decimal     @db.Decimal(10, 2)
+  currency          String      @default("USD")
+  
+  // Status
+  status            OrderStatus @default(pending)
+  
+  // Payment
+  paymentMethod     String?     // "stripe", "paypal", "bank_transfer"
+  paymentIntentId   String?     // Stripe payment intent
+  paidAt            DateTime?
+  
+  // Shipping
+  shippingAddressId String
+  billingAddressId  String
+  trackingNumber    String?
+  shippedAt         DateTime?
+  deliveredAt       DateTime?
+  
+  // Notes
+  customerNotes     String?     @db.Text
+  internalNotes     String?     @db.Text
+  
+  // Timestamps
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  
+  // Relations
+  collector         Collector   @relation(fields: [collectorId], references: [id])
+  items             OrderItem[]
+  shippingAddress   Address     @relation("ShippingAddress", fields: [shippingAddressId], references: [id])
+  billingAddress    Address     @relation("BillingAddress", fields: [billingAddressId], references: [id])
+  
+  @@index([collectorId])
+  @@index([status])
+  @@index([orderNumber])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id          String    @id @default(uuid())
+  orderId     String
+  artworkId   String
+  
+  // Item details
+  itemType    String    // "original", "print"
+  description String    // Snapshot of artwork title + details
+  
+  // Pricing
+  price       Decimal   @db.Decimal(10, 2)
+  quantity    Int       @default(1)
+  
+  // Print specific
+  printSize   String?   // "8x10", "16x20", etc.
+  printMaterial String? // "Archival paper", "Canvas"
+  
+  // Relations
+  order       Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  artwork     Artwork   @relation(fields: [artworkId], references: [id])
+  
+  @@index([orderId])
+  @@index([artworkId])
+}
+
+model Address {
+  id              String      @id @default(uuid())
+  collectorId     String
+  
+  // Address fields
+  name            String
+  line1           String
+  line2           String?
+  city            String
+  state           String
+  postalCode      String
+  country         String
+  
+  // Type
+  isDefault       Boolean     @default(false)
+  
+  // Timestamps
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  // Relations
+  collector       Collector   @relation(fields: [collectorId], references: [id], onDelete: Cascade)
+  shippingOrders  Order[]     @relation("ShippingAddress")
+  billingOrders   Order[]     @relation("BillingAddress")
+  
+  @@index([collectorId])
+}
+
+model Exhibition {
+  id          String              @id @default(uuid())
+  title       String
+  description String?             @db.Text
+  startDate   DateTime
+  endDate     DateTime?
+  location    String?
+  virtualUrl  String?             // For online exhibitions
+  
+  // Status
+  isActive    Boolean             @default(true)
+  isFeatured  Boolean             @default(false)
+  
+  // Timestamps
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  
+  // Relations
+  artworks    ExhibitionArtwork[]
+  
+  @@index([isActive])
+  @@index([startDate])
+}
+
+model ExhibitionArtwork {
+  id           String      @id @default(uuid())
+  exhibitionId String
+  artworkId    String
+  orderInShow  Int         @default(0)
+  
+  // Relations
+  exhibition   Exhibition  @relation(fields: [exhibitionId], references: [id], onDelete: Cascade)
+  artwork      Artwork     @relation(fields: [artworkId], references: [id], onDelete: Cascade)
+  
+  @@unique([exhibitionId, artworkId])
+  @@index([exhibitionId])
+  @@index([artworkId])
+}
+
+// Admin user for gallery management
+model AdminUser {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  name        String
+  role        String    @default("admin") // "admin", "super_admin"
+  authId      String    @unique // Supabase auth ID
+  
+  // Timestamps
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  lastLogin   DateTime?
+  
+  @@index([email])
+  @@index([authId])
+} 
