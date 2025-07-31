@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { Artwork } from '@/lib/db'
 import { EmotionalTags } from './EmotionalTags'
-import { formatPrice, formatDimensions } from '@/lib/utils'
+import { formatPrice, formatDimensions, artworkImageSizes } from '@/lib/utils'
 import { cn } from '@/lib/utils'
 
 interface ArtworkCardProps {
@@ -47,7 +47,8 @@ export function ArtworkCard({ artwork, priority = false, onTagClick }: ArtworkCa
               src={artwork.primaryImage.url}
               alt={artwork.primaryImage.altText}
               fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              sizes={artworkImageSizes.gallery}
+              quality={85}
               className={cn(
                 "object-cover transition-all duration-500",
                 imageLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-105',
@@ -55,6 +56,8 @@ export function ArtworkCard({ artwork, priority = false, onTagClick }: ArtworkCa
               )}
               onLoad={() => setImageLoaded(true)}
               priority={priority}
+              placeholder="blur"
+              blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
             />
           </div>
 
@@ -82,16 +85,16 @@ export function ArtworkCard({ artwork, priority = false, onTagClick }: ArtworkCa
           )}
         </div>
 
-        <div className="mt-3 space-y-2">
+                <div className="mt-3 space-y-3">
           <h3 className="text-lg font-medium text-gray-900 group-hover:text-turquoise-600 transition-colors">
             {artwork.title}
           </h3>
 
-          {/* Emotional tags */}
+          {/* Limited Emotional tags for clean layout */}
           {artwork.emotionalTags && artwork.emotionalTags.length > 0 && (
             <div onClick={(e) => e.preventDefault()}>
               <EmotionalTags
-                tags={artwork.emotionalTags}
+                tags={artwork.emotionalTags.slice(0, 2)}
                 size="sm"
                 onClick={onTagClick}
               />

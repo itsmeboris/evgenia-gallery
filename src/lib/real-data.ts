@@ -5,11 +5,11 @@ import { Category } from '@prisma/client'
 interface RawArtwork {
   id: string
   title: string
-  category: 'birds' | 'floral' | 'towns'
+  category: string
   subcategory: string
   dimensions: string
   medium: string
-  price: number
+  price: number | null
   description: string
   image: string
   featured: boolean
@@ -20,8 +20,8 @@ function transformArtwork(raw: RawArtwork, index: number) {
   // Parse dimensions (e.g., "20cm X 20cm" -> {width: 20, height: 20, unit: 'cm'})
   const dimensionMatch = raw.dimensions.match(/(\d+)\s*cm\s*[xX]\s*(\d+)\s*cm/i)
   const dimensions = dimensionMatch ? {
-    width: parseInt(dimensionMatch[1]),
-    height: parseInt(dimensionMatch[2]),
+    width: parseInt(dimensionMatch[1]!),
+    height: parseInt(dimensionMatch[2]!),
     unit: 'cm'
   } : { width: 40, height: 40, unit: 'cm' }
 
@@ -31,18 +31,18 @@ function transformArtwork(raw: RawArtwork, index: number) {
     .replace('images/artwork/', '/artwork/')
     .replace(/\.webp$/, '.jpg')
 
-  // Generate emotional tags based on category
-  const emotionalTagsByCategory = {
-    birds: ['freedom', 'joy', 'flight', 'nature'],
-    floral: ['growth', 'beauty', 'renewal', 'healing'],
-    towns: ['serenity', 'memories', 'warmth', 'peace']
+  // Enhanced emotional tags for therapeutic art experience
+  const emotionalTagsByCategory: Record<string, string[]> = {
+    birds: ['liberation', 'transcendence', 'spiritual_freedom', 'emotional_release', 'boundless_potential', 'rising_above'],
+    floral: ['transformation', 'healing_energy', 'inner_growth', 'renewal_cycle', 'gentle_healing', 'flourishing_spirit'],
+    towns: ['sanctuary', 'peaceful_refuge', 'emotional_home', 'grounding', 'cherished_moments', 'inner_peace']
   }
 
-  // Generate story based on category and title
-  const storyTemplates = {
-    birds: `This ${raw.title.toLowerCase()} represents the essence of freedom and the boundless spirit that soars within us all.`,
-    floral: `The delicate beauty of ${raw.title.toLowerCase()} captures nature's healing power and the promise of renewal.`,
-    towns: `${raw.title} invites us to find peace in the simple moments and cherish the places that hold our memories.`
+  // Healing-focused story templates reflecting Evgenia's therapeutic art mission
+  const storyTemplates: Record<string, string> = {
+    birds: `In my journey from technology to art, ${raw.title.toLowerCase()} emerged as a meditation on liberation. This piece invites you to release limiting beliefs and soar beyond self-imposed boundaries. The flowing brushstrokes mirror the movement of breaking free from constraints, whether professional, emotional, or spiritual. Each viewer may find their own moment of transcendence within these wings of possibility.`,
+    floral: `${raw.title.toLowerCase()} bloomed during a particularly transformative period in my artistic practice. The gentle healing energy captured here reflects nature's infinite capacity for renewal—something I discovered when transitioning from the analytical world of technology to the intuitive realm of art. This piece whispers of patience with personal growth, the beauty of gradual transformation, and the courage to bloom authentically.`,
+    towns: `${raw.title} holds the essence of sanctuary that I sought when changing careers from tech to art. This piece represents the emotional homes we create within ourselves—places of safety where we can reflect, grow, and find peace. The warm tones and gentle composition invite viewers to find their own inner refuge, a space where memories and dreams can coexist in harmony.`
   }
 
   return {
@@ -56,7 +56,7 @@ function transformArtwork(raw: RawArtwork, index: number) {
     weight: null,
     creationYear: 2023,
     creationMonth: Math.floor(Math.random() * 12) + 1,
-    storyBehindBrushstroke: raw.description || storyTemplates[raw.category],
+    storyBehindBrushstroke: raw.description || storyTemplates[raw.category] || `A beautiful ${raw.category} artwork that captures the essence of nature and emotion.`,
     emotionalTags: emotionalTagsByCategory[raw.category] || ['beauty', 'art'],
     inspirationSource: `Artist's ${raw.category} collection`,
     primaryImage: {
@@ -70,7 +70,7 @@ function transformArtwork(raw: RawArtwork, index: number) {
     availabilityStatus: 'available' as const,
     isOriginal: true,
     editionInfo: null,
-    pricing: { original: raw.price },
+    pricing: { original: raw.price || 0 },
     featured: raw.featured,
     galleryOrder: index + 1,
     seoDescription: `${raw.title} - Original ${raw.medium} by Evgenia Portnov. ${raw.dimensions}.`,
@@ -78,7 +78,7 @@ function transformArtwork(raw: RawArtwork, index: number) {
       raw.category,
       raw.title.toLowerCase(),
       raw.medium.toLowerCase(),
-      ...emotionalTagsByCategory[raw.category]
+      ...(emotionalTagsByCategory[raw.category] || [])
     ],
     searchVector: null,
     createdAt: new Date(),
@@ -104,9 +104,9 @@ export function getRealAvailableArtworks() {
 }
 
 export function getRealArtworksByCategory(category: string) {
-  const normalizedCategory = category === 'flowers' ? 'flowers' : 
+  const normalizedCategory = category === 'flowers' ? 'flowers' :
                             category === 'floral' ? 'flowers' : category
-  return realArtworks.filter(artwork => 
+  return realArtworks.filter(artwork =>
     artwork.category === normalizedCategory &&
     artwork.availabilityStatus === 'available'
   )

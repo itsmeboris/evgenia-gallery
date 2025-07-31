@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { prisma, getAvailableArtworks } from '@/lib/db'
 import { EmotionalTags } from '@/components/artwork/EmotionalTags'
 import { Button } from '@/components/ui/Button'
-import { formatPrice, formatDimensions } from '@/lib/utils'
+import { formatPrice, formatDimensions, artworkImageSizes } from '@/lib/utils'
 
 // Generate static params for all artworks
 export async function generateStaticParams() {
@@ -74,18 +74,21 @@ export default async function ArtworkDetailPage({
           Back to Gallery
         </Link>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          {/* Image Section */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-16">
+          {/* Image Section - Mobile Optimized */}
           <div className="relative">
-            <div className="sticky top-8">
-              <div className="relative aspect-square lg:aspect-auto lg:h-[600px] rounded-lg overflow-hidden bg-gray-100">
+            <div className="lg:sticky lg:top-8">
+              <div className="relative aspect-square sm:aspect-auto sm:h-[400px] lg:h-[600px] rounded-lg overflow-hidden bg-gray-100">
                 <Image
                   src={primaryImage.url}
                   alt={primaryImage.altText}
                   fill
-                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  sizes={artworkImageSizes.detail}
+                  quality={90}
                   className="object-contain"
                   priority
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWEREiMxUf/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
                 />
               </div>
 
@@ -98,22 +101,26 @@ export default async function ArtworkDetailPage({
             </div>
           </div>
 
-          {/* Information Section */}
-          <div className="space-y-6">
-            {/* Title and basic info */}
-            <div>
-              <h1 className="text-3xl font-display text-gray-900 mb-2">
+          {/* Information Section - Mobile Optimized */}
+          <div className="space-y-4 sm:space-y-6">
+            {/* Title and basic info - Mobile Friendly */}
+            <div className="text-center sm:text-left">
+              <h1 className="text-2xl sm:text-3xl font-display text-gray-900 mb-2">
                 {artwork.title}
               </h1>
-              <p className="text-lg text-gray-600">
+              <p className="text-base sm:text-lg text-gray-600">
                 {artwork.creationYear}
                 {artwork.creationMonth && ` • ${new Date(0, artwork.creationMonth - 1).toLocaleString('default', { month: 'long' })}`}
               </p>
             </div>
 
-            {/* Emotional tags */}
+            {/* Enhanced Emotional Journey */}
             {artwork.emotionalTags && artwork.emotionalTags.length > 0 && (
-              <EmotionalTags tags={artwork.emotionalTags} size="md" />
+              <div className="bg-gradient-to-r from-turquoise-50 to-blue-50 rounded-xl p-6 border border-turquoise-100">
+                <h3 className="text-lg font-medium text-gray-900 mb-3">Emotional Benefits</h3>
+                <p className="text-sm text-gray-600 mb-4">This artwork is designed to cultivate these healing qualities:</p>
+                <EmotionalTags tags={artwork.emotionalTags} size="md" />
+              </div>
             )}
 
             {/* Medium and dimensions */}
@@ -134,13 +141,31 @@ export default async function ArtworkDetailPage({
               )}
             </div>
 
-            {/* Story behind the brushstroke */}
+            {/* Enhanced Story Section */}
             {artwork.storyBehindBrushstroke && (
-              <div className="space-y-3">
-                <h2 className="text-xl font-medium text-gray-900">Story Behind the Brushstroke</h2>
-                <p className="text-gray-700 leading-relaxed">
-                  {artwork.storyBehindBrushstroke}
-                </p>
+              <div className="bg-white rounded-xl border border-gray-200 p-8 space-y-6">
+                <div className="text-center border-b border-gray-100 pb-6">
+                  <h2 className="text-2xl font-display text-gray-900 mb-2">Story Behind the Brushstroke</h2>
+                  <p className="text-sm text-gray-600 italic">A personal journey of healing and transformation</p>
+                </div>
+
+                <div className="prose prose-lg max-w-none">
+                  <p className="text-gray-700 leading-relaxed text-lg font-light first-letter:text-4xl first-letter:font-bold first-letter:text-turquoise-600 first-letter:float-left first-letter:mr-3 first-letter:mt-1">
+                    {artwork.storyBehindBrushstroke}
+                  </p>
+                </div>
+
+                <div className="border-t border-gray-100 pt-6">
+                  <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-turquoise-400 to-turquoise-600 flex items-center justify-center">
+                      <span className="text-white font-bold text-lg">E</span>
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-900">Evgenia Portnov</p>
+                      <p className="text-sm text-gray-600">Tech-to-Art Healing Journey</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
 
@@ -166,15 +191,21 @@ export default async function ArtworkDetailPage({
                 </span>
               </div>
 
-              {/* Action buttons */}
+              {/* Enhanced Action buttons */}
               {artwork.availabilityStatus === 'available' && (
                 <div className="space-y-3">
-                  <Button variant="primary" size="lg" className="w-full">
-                    Inquire About This Artwork
+                  <Button variant="primary" size="lg" className="w-full group">
+                    <span>Connect with This Artwork</span>
+                    <svg className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
                   </Button>
                   <Button variant="secondary" size="lg" className="w-full">
-                    Add to Wishlist
+                    Save to Collection
                   </Button>
+                  <div className="text-center text-sm text-gray-600 mt-4">
+                    <p className="italic">Each artwork comes with a personalized story about its therapeutic intention</p>
+                  </div>
                 </div>
               )}
             </div>

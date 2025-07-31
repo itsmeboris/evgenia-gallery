@@ -20,10 +20,17 @@ interface ArtworkGridProps {
 }
 
 const categoryLabels: Record<Category | 'all', string> = {
-  all: 'All Works',
-  birds: 'Birds',
-  flowers: 'Flowers',
-  towns: 'Towns & Landscapes',
+  all: 'All Collections',
+  birds: 'Liberation & Freedom',
+  flowers: 'Growth & Renewal',
+  towns: 'Peace & Sanctuary',
+}
+
+const categoryDescriptions: Record<Category | 'all', string> = {
+  all: 'Explore all therapeutic art collections',
+  birds: 'Release limiting beliefs and soar beyond boundaries',
+  flowers: 'Embrace transformation and gentle healing energy',
+  towns: 'Find grounding and create emotional refuge',
 }
 
 export function ArtworkGrid({
@@ -63,61 +70,82 @@ export function ArtworkGrid({
 
   return (
     <div className={cn('space-y-8', className)}>
-      {/* Category Filter */}
-      <div className="flex flex-wrap gap-2 justify-center">
-        <button
-          onClick={() => {
-            setSelectedCategory('all')
-            setSelectedTag(null)
-          }}
-          className={cn(
-            'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
-            selectedCategory === 'all'
-              ? 'bg-turquoise-500 text-white'
-              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-          )}
-        >
-          {categoryLabels.all}
-        </button>
-        {categories.map(category => (
+            {/* Enhanced Category Filter with Mobile-First Design */}
+      <div className="text-center mb-8">
+        <h3 className="text-lg sm:text-xl font-medium text-gray-900 mb-4 sm:mb-6">Choose Your Healing Journey</h3>
+
+        {/* Mobile-Optimized Category Pills */}
+        <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-3 justify-center mb-4 sm:mb-6">
           <button
-            key={category}
             onClick={() => {
-              setSelectedCategory(category)
+              setSelectedCategory('all')
               setSelectedTag(null)
             }}
             className={cn(
-              'px-4 py-2 rounded-full text-sm font-medium transition-all duration-200',
-              selectedCategory === category
-                ? 'bg-turquoise-500 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              'w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border-2 touch-manipulation',
+              selectedCategory === 'all'
+                ? 'bg-turquoise-500 text-white border-turquoise-500 shadow-md'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-turquoise-300 hover:bg-turquoise-50 active:scale-95'
             )}
           >
-            {categoryLabels[category]}
+            {categoryLabels.all}
           </button>
-        ))}
+          {categories.map(category => (
+            <button
+              key={category}
+              onClick={() => {
+                setSelectedCategory(category)
+                setSelectedTag(null)
+              }}
+              className={cn(
+                'w-full sm:w-auto px-4 sm:px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 border-2 touch-manipulation',
+                selectedCategory === category
+                  ? 'bg-turquoise-500 text-white border-turquoise-500 shadow-md'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-turquoise-300 hover:bg-turquoise-50 active:scale-95'
+              )}
+            >
+              {categoryLabels[category]}
+            </button>
+          ))}
+        </div>
+
+        {/* Active Category Description - Mobile Optimized */}
+        <p className="text-sm sm:text-base text-gray-600 italic max-w-sm sm:max-w-md mx-auto px-4">
+          {categoryDescriptions[selectedCategory]}
+        </p>
       </div>
 
-      {/* Active tag filter */}
+                  {/* Simplified Emotional Tag Filter */}
       {selectedTag && (
-        <div className="text-center">
-          <span className="text-sm text-gray-600">
-            Filtering by emotion:
-            <span className="ml-2 inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-turquoise-100 text-turquoise-700">
-              {selectedTag}
-              <button
-                onClick={() => setSelectedTag(null)}
-                className="ml-2 hover:text-turquoise-900"
-              >
-                ×
-              </button>
+        <div className="text-center bg-turquoise-50 rounded-lg p-4 border border-turquoise-100 mb-6">
+          <div className="flex items-center justify-center gap-3">
+            <span className="text-sm font-medium text-turquoise-800">
+              Showing artworks for: <strong>{selectedTag.replace('_', ' ')}</strong>
             </span>
-          </span>
+            <button
+              onClick={() => setSelectedTag(null)}
+              className="text-turquoise-600 hover:text-turquoise-800 font-bold text-lg leading-none bg-turquoise-100 hover:bg-turquoise-200 rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+              title="Clear filter"
+            >
+              ×
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Artwork Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+      {/* Results Summary - Only show if not using tag filter */}
+      {!selectedTag && (
+        <div className="text-center text-sm text-gray-600 mb-6">
+          {selectedCategory !== 'all' ? (
+            <span>Showing {filteredArtworks.length} artwork{filteredArtworks.length !== 1 ? 's' : ''} in <strong>{categoryLabels[selectedCategory]}</strong></span>
+          ) : (
+            <span>{filteredArtworks.length} artwork{filteredArtworks.length !== 1 ? 's' : ''} in the collection</span>
+          )}
+        </div>
+      )}
+
+      {/* Mobile-Optimized Artwork Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         <AnimatePresence mode="popLayout">
           {filteredArtworks.slice(0, displayCount).map((artwork, index) => (
             <motion.div
@@ -149,19 +177,28 @@ export function ArtworkGrid({
         </div>
       )}
 
-      {/* Empty state */}
+      {/* Accessible Empty state */}
       {filteredArtworks.length === 0 && (
-        <div className="text-center py-12">
-          <p className="text-gray-600">No artworks found matching your criteria.</p>
-          <button
-            onClick={() => {
-              setSelectedCategory('all')
-              setSelectedTag(null)
-            }}
-            className="mt-4 text-turquoise-600 hover:text-turquoise-700 font-medium"
-          >
-            Clear filters
-          </button>
+        <div className="text-center py-12" role="status" aria-live="polite">
+          <div className="max-w-md mx-auto space-y-4">
+            <div className="w-16 h-16 mx-auto bg-gray-100 rounded-full flex items-center justify-center">
+              <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+            <p className="text-gray-600 text-lg">No artworks found matching your criteria.</p>
+            <p className="text-sm text-gray-500">Try adjusting your filters to discover more healing art.</p>
+            <button
+              onClick={() => {
+                setSelectedCategory('all')
+                setSelectedTag(null)
+              }}
+              className="mt-4 inline-flex items-center px-4 py-2 text-turquoise-600 hover:text-turquoise-700 font-medium bg-turquoise-50 hover:bg-turquoise-100 rounded-lg transition-colors touch-manipulation"
+              aria-label="Clear all filters and show all artworks"
+            >
+              Clear all filters
+            </button>
+          </div>
         </div>
       )}
     </div>
