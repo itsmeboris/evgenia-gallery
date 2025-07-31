@@ -9,7 +9,7 @@
       "medium": "Acrylic on Canvas",
       "price": 500,
       "description": "",
-      "image": "images/artwork/birds/Image1.webp",
+      "image": "/artwork/birds/Image1.jpg",
       "featured": false
     },
     {
@@ -21,7 +21,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/birds/Image2.webp",
+      "image": "/artwork/birds/Image2.jpg",
       "featured": false
     },
     {
@@ -33,7 +33,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/birds/Image7.webp",
+      "image": "/artwork/birds/Image7.jpg",
       "featured": false
     },
     {
@@ -45,7 +45,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/birds/Image22.webp",
+      "image": "/artwork/birds/Image22.jpg",
       "featured": false
     },
     {
@@ -57,7 +57,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/birds/Image24.webp",
+      "image": "/artwork/birds/Image24.jpg",
       "featured": false
     },
     {
@@ -69,7 +69,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/birds/Image9.webp",
+      "image": "/artwork/birds/Image9.jpg",
       "featured": true
     },
     {
@@ -81,7 +81,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image26.webp",
+      "image": "/artwork/floral/Image26.jpg",
       "featured": false
     },
     {
@@ -93,7 +93,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image27.webp",
+      "image": "/artwork/floral/Image27.jpg",
       "featured": false
     },
     {
@@ -105,7 +105,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image13.webp",
+      "image": "/artwork/floral/Image13.jpg",
       "featured": false
     },
     {
@@ -117,7 +117,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image34.webp",
+      "image": "/artwork/floral/Image34.jpg",
       "featured": false
     },
     {
@@ -129,7 +129,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image29.webp",
+      "image": "/artwork/floral/Image29.jpg",
       "featured": false
     },
     {
@@ -141,7 +141,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image28.webp",
+      "image": "/artwork/floral/Image28.jpg",
       "featured": false
     },
     {
@@ -153,7 +153,7 @@
       "medium": "Acrylic on Canvas",
       "price": null,
       "description": "",
-      "image": "images/artwork/floral/Image39.webp",
+      "image": "/artwork/floral/Image39.jpg",
       "featured": true
     },
     {
@@ -165,7 +165,7 @@
       "medium": "Acrylic on Canvas",
       "price": null,
       "description": "",
-      "image": "images/artwork/floral/Image38.webp",
+      "image": "/artwork/floral/Image38.jpg",
       "featured": false
     },
     {
@@ -177,7 +177,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/floral/Image40.webp",
+      "image": "/artwork/floral/Image40.jpg",
       "featured": false
     },
     {
@@ -189,7 +189,7 @@
       "medium": "Acrylic on Canvas",
       "price": null,
       "description": "",
-      "image": "images/artwork/floral/Image36.webp",
+      "image": "/artwork/floral/Image36.jpg",
       "featured": false
     },
     {
@@ -201,7 +201,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image25.webp",
+      "image": "/artwork/towns/Image25.jpg",
       "featured": false
     },
     {
@@ -213,7 +213,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image4.webp",
+      "image": "/artwork/towns/Image4.jpg",
       "featured": false
     },
     {
@@ -225,7 +225,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image48.webp",
+      "image": "/artwork/towns/Image48.jpg",
       "featured": false
     },
     {
@@ -237,7 +237,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image19.webp",
+      "image": "/artwork/towns/Image19.jpg",
       "featured": false
     },
     {
@@ -249,7 +249,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image32.webp",
+      "image": "/artwork/towns/Image32.jpg",
       "featured": false
     },
     {
@@ -261,7 +261,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image49.webp",
+      "image": "/artwork/towns/Image49.jpg",
       "featured": false
     },
     {
@@ -273,7 +273,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image55.webp",
+      "image": "/artwork/towns/Image55.jpg",
       "featured": false
     },
     {
@@ -285,7 +285,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image56.webp",
+      "image": "/artwork/towns/Image56.jpg",
       "featured": false
     },
     {
@@ -297,7 +297,7 @@
       "medium": "Acrylic on Canvas",
       "price": null,
       "description": "",
-      "image": "images/artwork/towns/Image45.webp",
+      "image": "/artwork/towns/Image45.jpg",
       "featured": false
     },
     {
@@ -309,7 +309,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image31.webp",
+      "image": "/artwork/towns/Image31.jpg",
       "featured": false
     },
     {
@@ -321,7 +321,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image43.webp",
+      "image": "/artwork/towns/Image43.jpg",
       "featured": false
     },
     {
@@ -333,7 +333,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image35.webp",
+      "image": "/artwork/towns/Image35.jpg",
       "featured": false
     },
     {
@@ -345,7 +345,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image3.webp",
+      "image": "/artwork/towns/Image3.jpg",
       "featured": false
     },
     {
@@ -357,7 +357,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image33.webp",
+      "image": "/artwork/towns/Image33.jpg",
       "featured": false
     },
     {
@@ -369,7 +369,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image51.webp",
+      "image": "/artwork/towns/Image51.jpg",
       "featured": false
     },
     {
@@ -381,7 +381,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image11.webp",
+      "image": "/artwork/towns/Image11.jpg",
       "featured": false
     },
     {
@@ -393,7 +393,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image53.webp",
+      "image": "/artwork/towns/Image53.jpg",
       "featured": false
     },
     {
@@ -405,7 +405,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image44.webp",
+      "image": "/artwork/towns/Image44.jpg",
       "featured": true
     },
     {
@@ -417,7 +417,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image47.webp",
+      "image": "/artwork/towns/Image47.jpg",
       "featured": false
     },
     {
@@ -429,7 +429,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image20.webp",
+      "image": "/artwork/towns/Image20.jpg",
       "featured": false
     },
     {
@@ -441,7 +441,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image21.webp",
+      "image": "/artwork/towns/Image21.jpg",
       "featured": false
     },
     {
@@ -453,7 +453,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image46.webp",
+      "image": "/artwork/towns/Image46.jpg",
       "featured": false
     },
     {
@@ -465,7 +465,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image8.webp",
+      "image": "/artwork/towns/Image8.jpg",
       "featured": false
     },
     {
@@ -477,7 +477,7 @@
       "medium": "Acrylic on Canvas",
       "price": 400,
       "description": "",
-      "image": "images/artwork/towns/Image37.webp",
+      "image": "/artwork/towns/Image37.jpg",
       "featured": false
     }
   ],
@@ -487,7 +487,7 @@
       "name": "Floral Series",
       "slug": "floral",
       "description": "Vibrant expressions of nature's beauty",
-      "image": "images/hero/floral.webp",
+      "image": "images/hero/floral.jpg",
       "subcategories": {
         "roses": "Roses and Bouquets",
         "wildflowers": "Wildflowers",
@@ -499,7 +499,7 @@
       "name": "Mystic Towns",
       "slug": "towns",
       "description": "Dreamlike urban landscapes",
-      "image": "images/hero/towns.webp",
+      "image": "images/hero/towns.jpg",
       "subcategories": {
         "european": "European Villages",
         "coastal": "Coastal Towns",
@@ -511,7 +511,7 @@
       "name": "Birds in Flight",
       "slug": "birds",
       "description": "Freedom and grace captured in acrylic",
-      "image": "images/hero/birds.webp",
+      "image": "images/hero/birds.jpg",
       "subcategories": {
         "songbirds": "Songbirds",
         "raptors": "Birds of Prey",
@@ -520,7 +520,7 @@
     }
   ],
   "settings": {
-    "imagePath": "images/artwork/",
+    "imagePath": "/artwork/",
     "currency": "₪"
   }
 }

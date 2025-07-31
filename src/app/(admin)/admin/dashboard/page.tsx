@@ -3,6 +3,9 @@ import { AuthStatus } from '@/components/auth/AuthStatus'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 
+// This page uses authentication (cookies) so it must be dynamic
+export const dynamic = 'force-dynamic'
+
 export default async function AdminDashboard() {
   const { user, profile } = await requireAdmin()
   return (
@@ -24,7 +27,7 @@ export default async function AdminDashboard() {
                   ← Back to Gallery
                 </Button>
               </Link>
-              <AuthStatus />
+              <AuthStatus hideDashboardButton={true} />
             </div>
           </div>
         </div>

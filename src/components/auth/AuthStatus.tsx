@@ -9,6 +9,7 @@ import type { User } from '@supabase/supabase-js'
 
 interface AuthStatusProps {
   className?: string
+  hideDashboardButton?: boolean
 }
 
 interface UserProfile {
@@ -18,7 +19,7 @@ interface UserProfile {
   role: 'visitor' | 'collector' | 'admin'
 }
 
-export function AuthStatus({ className }: AuthStatusProps) {
+export function AuthStatus({ className, hideDashboardButton = false }: AuthStatusProps) {
   const [user, setUser] = useState<User | null>(null)
   const [profile, setProfile] = useState<UserProfile | null>(null)
   const [loading, setLoading] = useState(true)
@@ -36,7 +37,7 @@ export function AuthStatus({ className }: AuthStatusProps) {
       try {
         const { data: { user } } = await supabase.auth.getUser()
         setUser(user)
-        
+
         if (user) {
           // Fetch user profile
           const { data: userProfile } = await supabase
@@ -44,7 +45,7 @@ export function AuthStatus({ className }: AuthStatusProps) {
             .select('*')
             .eq('id', user.id)
             .single()
-          
+
           setProfile(userProfile)
         } else {
           setProfile(null)
@@ -133,7 +134,7 @@ export function AuthStatus({ className }: AuthStatusProps) {
         <span className="text-sm text-gray-600">
           Welcome, {displayName}
         </span>
-        {isAdmin && (
+        {isAdmin && !hideDashboardButton && (
           <Link href="/admin/dashboard">
             <Button variant="secondary" size="sm">
               Dashboard

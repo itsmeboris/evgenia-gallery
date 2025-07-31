@@ -6,6 +6,9 @@ import { EmotionalTags } from '@/components/artwork/EmotionalTags'
 import { Button } from '@/components/ui/Button'
 import { formatPrice, formatDimensions, artworkImageSizes } from '@/lib/utils'
 
+// This page uses database queries so must be dynamic
+export const dynamic = 'force-dynamic'
+
 // Generate static params for all artworks
 export async function generateStaticParams() {
   if (!prisma) {
